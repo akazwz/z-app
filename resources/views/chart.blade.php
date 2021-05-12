@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="calendar" style="width: 100%;height: 300px"></div>
+<div id="bar-simple" style="width: 100%;height: 300px"></div>
 <div id="bar-race" style="width: 100%;height: 300px"></div>
 <div id="bar-race-duration" style="width: 100%;height: 300px"></div>
 <div id="gauge" style="width: 50%;height: 400px"></div>
@@ -70,6 +71,27 @@
     calendarChart.on('click', 'series', function (params) {
         alert(params.data[0])
     });
+
+    const barSimpleChart = echarts.init(document.getElementById('bar-simple'));
+    const optionBarSimple = {
+        title: {
+            left: 'center',
+            text: '工作面积'
+        },
+        xAxis: {
+            type: 'category',
+            data: ['05-01', '05-02', '05-11', '05-12']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: '工作面积',
+            data: [200, 300, 170, 149],
+            type: 'bar'
+        }]
+    }
+    barSimpleChart.setOption(optionBarSimple)
 
 
     const barRaceChart = echarts.init(document.getElementById('bar-race'));
