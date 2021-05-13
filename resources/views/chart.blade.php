@@ -8,6 +8,7 @@
 <body>
 <div id="calendar" style="width: 100%;height: 300px"></div>
 <div id="bar-simple" style="width: 100%;height: 300px"></div>
+<div id="bar-simple-earthwork" style="width: 100%;height: 300px"></div>
 <div id="bar-race" style="width: 100%;height: 300px"></div>
 <div id="bar-race-duration" style="width: 100%;height: 300px"></div>
 <div id="gauge" style="width: 50%;height: 400px"></div>
@@ -15,6 +16,7 @@
 </html>
 <script>
     const calendarChart = echarts.init(document.getElementById('calendar'));
+
     function getVirtualData(year) {
         year = year || '2021'
         const date = +echarts.number.parseDate(year + '-01-01');
@@ -29,6 +31,7 @@
         }
         return data
     }
+
     const optionCalendar = {
         title: {
             left: 'center',
@@ -78,25 +81,56 @@
             left: 'center',
             text: '工作面积'
         },
+        tooltip: {},
         xAxis: {
+            name: '日期',
             type: 'category',
-            data: ['05-01', '05-02', '05-11', '05-12']
+            data: ['05-01', '05-02', '05-03', '05-04', '05-05', '05-06', '05-07', '05-08', '05-11', '05-12']
         },
         yAxis: {
+            name: '面积/m²',
             type: 'value'
         },
-        series: [{
-            name: '工作面积',
-            data: [200, 300, 170, 149],
-            type: 'bar'
-        }]
+        series: [
+            {
+                name: '工作面积',
+                data: [200, 300, 170, 149, 244, 456, 657, 213, 34, 566],
+                type: 'bar'
+            },
+        ]
     }
     barSimpleChart.setOption(optionBarSimple)
+
+    const barEarthworkChart = echarts.init(document.getElementById('bar-simple-earthwork'));
+    const optionBarEarthwork = {
+        title: {
+            left: 'center',
+            text: '工作土方量'
+        },
+        tooltip: {},
+        xAxis: {
+            name: '日期',
+            type: 'category',
+            data: ['05-01', '05-02', '05-03', '05-04', '05-05', '05-06', '05-07', '05-08', '05-11', '05-12']
+        },
+        yAxis: {
+            name: '土方量/m³',
+            type: 'value'
+        },
+        series: [
+            {
+                name: '工作土方量',
+                data: [20, 300, 170, 149, 244, 46, 157, 213, 34, 366],
+                type: 'bar'
+            },
+        ]
+    }
+    barEarthworkChart.setOption(optionBarEarthwork)
 
 
     const barRaceChart = echarts.init(document.getElementById('bar-race'));
     const data = [];
-    for (let i = 0; i < 5; ++i ) {
+    for (let i = 0; i < 5; ++i) {
         data.push(Math.round(Math.random() * 1000),)
     }
     const optionBarRace = {
@@ -147,7 +181,7 @@
 
     const durationBarRaceChart = echarts.init(document.getElementById('bar-race-duration'));
     const dataDuration = [];
-    for (let i = 0; i < 5; ++i ) {
+    for (let i = 0; i < 5; ++i) {
         dataDuration.push(Math.round(Math.random() * 23),)
     }
     const optionBarRaceDuration = {

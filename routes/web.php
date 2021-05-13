@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HtmlToPdfController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,7 @@ Route::get('/', function () {
 Route::get('/chart', function () {
     return view('chart');
 });
-
+Route::get('/pdf', function () {
+    return view('html_to_pdf');
+});
+Route::get('/html-to-pdf', [HtmlToPdfController::class, 'HtmlToPdf']);
