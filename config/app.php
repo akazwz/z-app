@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // Tools
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
     ],
 
     /*
@@ -231,7 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         // Tools
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'SnappyPDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

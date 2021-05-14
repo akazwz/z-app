@@ -3,18 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use PDF;
+use SnappyPDF;
 
 class HtmlToPdfController extends Controller
 {
-    public function HtmlToPdf(): bool
+    public function HtmlToPdf(): Response
     {
-        $is = extension_loaded('imagick');
-        if (!$is) {
-            return 'imagick未安装';
-        }
-        $pdf = PDF::loadView('html_to_pdf');
-        return phpinfo();
-        //return $pdf->download();
+        $pdf = SnappyPDF::loadHTML('<h1>ZWZ</h1>>');
+        return $pdf->download();
     }
 }
