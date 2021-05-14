@@ -35,17 +35,21 @@ return [
 
     'pdf' => [
         'enabled' => true,
-        // 'binary'  => env('WKHTML_PDF_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64')),
-        'binary'  => env('WKHTML_PDF_BINARY', '"D:\soft\wkhtmltopdf\bin\wkhtmltopdf.exe"'),
+        'binary'  => env('WKHTML_PDF_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64')),
         'timeout' => false,
-        'options' => [],
+        'options' => [
+            'enable-javascript' => true,
+            'javascript-delay' => 13500,
+            'no-stop-slow-scripts' => true,
+            'lowquality' => false,
+        ],
         'env'     => [],
     ],
 
     'image' => [
         'enabled' => false,
-        // 'binary'  => env('WKHTML_IMG_BINARY', 'vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltopdf-amd64'),
-        'binary'  => env('WKHTML_IMG_BINARY', '"D:\soft\wkhtmltopdf\bin\wkhtmltoimage.exe"'),
+        //'binary'  => env('WKHTML_IMG_BINARY', 'vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
+        'binary'  => base_path('vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
         'timeout' => false,
         'options' => [],
         'env'     => [],

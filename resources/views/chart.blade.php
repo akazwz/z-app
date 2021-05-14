@@ -171,6 +171,7 @@
             top: 30,
             show: true
         },
+        animation: false,
         animationDuration: 0,
         animationDurationUpdate: 3000,
         animationEasing: 'linear',
