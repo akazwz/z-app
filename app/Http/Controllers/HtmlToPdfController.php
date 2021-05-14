@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Barryvdh\Snappy;
 use SnappyImage;
 use SnappyPDF;
 
@@ -17,9 +16,9 @@ class HtmlToPdfController extends Controller
         $pdf = SnappyPDF::loadView('chart_no_animation');
         return $pdf->inline();
     }
-    public function HtmlToImage(): Response
+
+    public function HtmlToImage()
     {
-        $img = SnappyPDF::loadHTML('chart_no_animation');
-        return $img->inline();
+        return SnappyImage::loadView('<h1>ZWZ</h1>')->download();
     }
 }
