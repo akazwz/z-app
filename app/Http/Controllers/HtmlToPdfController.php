@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
+use SnappyImage;
 use SnappyPDF;
-use Knp\Snappy\Image;
 
 class HtmlToPdfController extends Controller
 {
@@ -17,9 +17,8 @@ class HtmlToPdfController extends Controller
         return $pdf->inline();
     }
 
-    public function HtmlToImage()
+    public function HtmlToImage(): Response
     {
-        $img = new Image(base_path('vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'));
-        $img->generateFromHtml('<h1>ZWZ</h1>', 'test.jpg');
+        return SnappyImage::loadView('<h1>ZWZ</h1>')->inline();
     }
 }

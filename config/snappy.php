@@ -47,7 +47,7 @@ return [
     ],
 
     'image' => [
-        'enabled' => false,
+        'enabled' => true,
         //'binary'  => env('WKHTML_IMG_BINARY', 'vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
         'binary'  => base_path('vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
         'timeout' => false,
