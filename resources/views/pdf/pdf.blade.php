@@ -6,29 +6,29 @@
     <link rel="stylesheet" href="{{mix('css/app.css')}}"/>
 </head>
 <header class="head">
-    <h4>WELCOME TO Z-APP</h4>
+    <h4>PDF</h4>
 </header>
 <body class="card-body" style="width: 100%">
 <div class="container" style="width: 100%">
     <div class="row clearfix">
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toPDF()">
-                <span>PDF </span>
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="linkToPDF()">
+                <span>LINK TO PDF </span>
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
             <button type="button" class="btn btn-block btn-lg btn-info">
-                <span>IMAGE </span>
+                <span>HTML FILE TO PDF </span>
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
             <button type="button" class="btn btn-block btn-lg btn-info">
-                <span>FILE </span>
+                <span>WORD TO PDF </span>
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
             <button type="button" class="btn btn-block btn-lg btn-info">
-                <span>PROFILE </span>
+                <span>MORE </span>
             </button>
         </div>
     </div>
@@ -39,8 +39,8 @@
 </footer>
 </html>
 <script>
-    function toPDF() {
-        self.location.href = '/pdf';
+    function linkToPDF() {
+        self.location.href = '/link-to-pdf';
     }
 </script>
 <style>

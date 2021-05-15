@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Z-App-Chart</title>
     <script src="{{mix('js/app.js')}}"></script>
+    <link type="text/css" href="{{mix('css/app.css')}}"/>
 </head>
 <body>
 <div id="calendar" style="width: 100%;height: 300px"></div>
