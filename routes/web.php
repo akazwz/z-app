@@ -29,7 +29,13 @@ Route::get('/pdf', function () {
 Route::get('/link-to-pdf', function () {
     return view('pdf/link_to_pdf');
 });
+Route::get('/chose-pdf-option', function () {
+    return view('pdf/chose-pdf-option');
+});
 Route::post('/is-url-valid', [HtmlToPdfController::class, 'isURLValid']);
-Route::post('/link-to-pdf', [HtmlToPdfController::class, 'linkToPdf']);
+
+
+Route::get('/to-preview-pdf', [HtmlToPdfController::class, 'toPreviewPDF']);
+Route::get('/to-download-pdf', [HtmlToPdfController::class, 'toDownloadPDF']);
 Route::get('/html-to-pdf', [HtmlToPdfController::class, 'HtmlToPdf']);
 Route::get('/html-to-image', [HtmlToPdfController::class, 'HtmlToImage']);

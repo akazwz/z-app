@@ -13,22 +13,41 @@ class HtmlToPdfController extends Controller
     public function isURLValid(Request $request): JsonResponse
     {
         $url = $request->post('url');
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            $res = ['valid' => false];
+            return $this->commonFailed(4000, 'url正则无效', $res);
+        }
         $arr = get_headers($url, 1);
         if (preg_match('/200/', $arr[0])) {
             $res = ['valid' => true];
-            $this->commonSuccess(2000, 'url合法有效', $res);
-        } else {
-            $res = ['valid' => false];
-            $this->commonFailed(4000, 'url无效', $res);
+            return $this->commonSuccess(2000, 'url合法有效', $res);
         }
+        $res = ['valid' => false];
+        return $this->commonFailed(4000, 'url无效', $res);
     }
 
-    public function linkToPdf(Request $request): string
+    public function toPreviewPDF(Request $request): Response|string
     {
-        $url = $request->post('url');
+        $url = $request->query('url');
+        $type = $request->query('type');
         SnappyPDF::setPaper('a4');
-        $pdf = SnappyPDF::loadFile($url);
-        return $pdf->inline();
+        return match ($type) {
+            'link' => SnappyPDF::loadFile($url)->inline(),
+            'html' => SnappyPDF::loadHTML('<h1>WE ARE DOING THIS</h1>')->inline(),
+            default => 'error',
+        };
+    }
+
+    public function toDownloadPDF(Request $request): Response|string
+    {
+        $url = $request->query('url');
+        $type = $request->query('type');
+        SnappyPDF::setPaper('a4');
+        return match ($type) {
+            'link' => SnappyPDF::loadFile($url)->download(),
+            'html' => SnappyPDF::loadHTML('<h1>WE ARE DOING THIS</h1>')->download(),
+            default => 'error',
+        };
     }
 
     public function HtmlToImage(): Response

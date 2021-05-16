@@ -7,30 +7,21 @@
     <script src="{{mix('js/app.js')}}"></script>
 </head>
 <header class="head">
-    <h4>LINK TO PDF</h4>
+    <h4>OPTION</h4>
 </header>
 <body class="card-body" style="width: 100%">
 <div class="container" style="width: 100%">
     <div class="row clearfix">
 
-        <div class="col-lg-12 col-12 column">
-            <div id="alertDanger" class="alert alert-danger alert-dismissible fade show" style="display: none">
-                <i id="closeDanger" class="close" onclick="closeDanger()">&times;</i>
-                <strong>WARNING!</strong> Check The URL
-            </div>
+        <div class="col-lg-6 col-12 column">
+            <button id="previewBtn" type="button" class="btn btn-block btn-lg btn-info" onclick="toPreviewPDF()">
+                <span id="preview">PREVIEW </span>
+            </button>
         </div>
 
         <div class="col-lg-6 col-12 column">
-            <div id="input-url" class="input-url">
-                <label> URL:
-                    <input id="url" type="url" class="form-control-lg" accept="text/uri-list" placeholder="INPUT URL">
-                </label>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-12 column">
-            <button id="checkURL" type="button" class="btn btn-block btn-lg btn-info" onclick="checkURL()">
-                <span id="toCheck">TO PDF </span>
+            <button id="downloadBtn" type="button" class="btn btn-block btn-lg btn-info" onclick="toDownloadPDF()">
+                <span id="download">DOWNLOAD </span>
             </button>
         </div>
 
@@ -46,30 +37,32 @@
 </footer>
 </html>
 <script>
-    function checkURL() {
-        const url = $('#url');
-        const inputURL = $('#input-url');
-        $('#loading').css('visibility', 'visible')
-        let data = {
-            url: url.val()
+    function getQueryVariable(variable)
+    {
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i=0; i<vars.length; i++) {
+            const pair = vars[i].split("=");
+            if(pair[0] === variable){return pair[1];}
         }
-        axios.post('/is-url-valid', data).then(res => {
-            $('#loading').css('display', 'none')
-            if (res.data.data.valid === true) {
-                self.location.href = '/chose-pdf-option?type=link&url=' + data.url;
-            } else {
-                $('#alertDanger').css('visibility', 'visible')
-                inputURL.setAttribute('background', 'red')
-            }
-        }).catch(err => {
-            $('#loading').css('visibility', 'hidden')
-            $('#alertDanger').css('display', 'block')
-            inputURL.css('background', 'red')
-        })
+        return false;
     }
 
-    function closeDanger() {
-        $('#alertDanger').css('display', 'none')
+    url = getQueryVariable('url')
+    type = getQueryVariable('type')
+    if (url === false) {
+        self.location.href = 'pdf'
+    }
+    if (type === false) {
+        self.location.href = 'pdf'
+    }
+    function toPreviewPDF() {
+        $('#loading').css('visibility', 'visible')
+        self.location.href = 'to-preview-pdf?url=' + url + '&type=' + type;
+    }
+    function toDownloadPDF() {
+        $('#loading').css('visibility', 'visible')
+        self.location.href = 'to-download-pdf?url=' + url + '&type=' + type;
     }
 </script>
 <style>
