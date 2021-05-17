@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\HtmlToPdfController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,5 +38,8 @@ Route::post('/is-url-valid', [HtmlToPdfController::class, 'isURLValid']);
 
 Route::get('/to-preview-pdf', [HtmlToPdfController::class, 'toPreviewPDF']);
 Route::get('/to-download-pdf', [HtmlToPdfController::class, 'toDownloadPDF']);
+
+Route::get('/export-excel', [ExcelController::class, 'exportExcel']);
+
 Route::get('/html-to-pdf', [HtmlToPdfController::class, 'HtmlToPdf']);
 Route::get('/html-to-image', [HtmlToPdfController::class, 'HtmlToImage']);
