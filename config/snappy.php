@@ -41,7 +41,7 @@ return [
             'enable-javascript' => true,
             'javascript-delay' => 13500,
             'no-stop-slow-scripts' => true,
-            'lowquality' => false,
+            'lowquality' => true,
         ],
         'env'     => [],
     ],
@@ -51,7 +51,12 @@ return [
         //'binary'  => env('WKHTML_IMG_BINARY', 'vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
         'binary'  => base_path('vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64'),
         'timeout' => 3600,
-        'options' => [],
+        'options' => [
+            'enable-javascript' => true,
+            'javascript-delay' => 13500,
+            'no-stop-slow-scripts' => true,
+            'lowquality' => true,
+        ],
         'env'     => [],
     ],
 
