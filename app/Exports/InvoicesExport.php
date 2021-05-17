@@ -43,10 +43,10 @@ class InvoicesExport implements FromArray, WithHeadings, WithColumnFormatting, W
             'creator'        => 'ICEGPS',
             'lastModifiedBy' => 'ICEGPS',
             'title'          => 'Title-ICEGPS',
-            'description'    => 'Latest Invoices',
+            'description'    => '工作报表',
             'subject'        => 'Invoices',
-            'keywords'       => 'invoices,export,spreadsheet',
-            'category'       => 'Invoices',
+            'keywords'       => 'work,export,spreadsheet',
+            'category'       => 'work',
             'manager'        => 'ICEGPS',
             'company'        => 'ICEGPS',
         ];
