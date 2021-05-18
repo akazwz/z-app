@@ -28,15 +28,16 @@
         self.location.href = '/chart'
     }
     params = {
-        file_name : fileName
+        file_name: fileName
     }
-
     $(document).ready(function () {
         getBarChartData()
     })
 
     function getBarChartData() {
-        axios.get('/api/chart/to-bar-chart-data', params).then( (res) => {
+        axios.get('/api/chart/to-bar-chart-data', {
+            params: params
+        }).then( (res) => {
             alert(res.data)
         }).catch( (err) => {
 

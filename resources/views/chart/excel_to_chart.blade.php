@@ -33,7 +33,7 @@
             <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled onclick="excelToChart()">
                 <span id="to-chart-span">TO CHART </span>
             </button>
-            <p id="file-name" style="display: inline"></p>
+            <p id="file-name" style="display: none"></p>
         </div>
 
         <div id="loadingDiv" class="col-lg-12 col-12 column">
