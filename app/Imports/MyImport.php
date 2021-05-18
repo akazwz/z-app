@@ -8,8 +8,8 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 
 class MyImport implements ToArray
 {
-
-    public function array(array $array)
+    public function array(array $array): array
     {
+        return $array;
     }
 }

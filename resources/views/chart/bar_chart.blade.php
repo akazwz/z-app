@@ -27,47 +27,59 @@
     if (fileName === false) {
         self.location.href = '/chart'
     }
-    params = {
-        file_name: fileName
-    }
-    $(document).ready(function () {
-        getBarChartData()
-    })
+
+
+    let xText = ''
+    let yText = ''
+    let xData = []
+    let yData = []
+    getBarChartData()
 
     function getBarChartData() {
+        const params = {
+            file_name: fileName
+        };
         axios.get('/api/chart/to-bar-chart-data', {
             params: params
         }).then( (res) => {
-            alert(res.data)
+            if (res.data.code === 2000) {
+                xText = res.data.data.x_text
+                yText = res.data.data.y_text
+                xData = res.data.data.x_data
+                yData = res.data.data.y_data
+                createChart()
+            }
         }).catch( (err) => {
-
         })
     }
 
-
-    const barSimpleChart = echarts.init(document.getElementById('bar-simple'));
-    const optionBarSimple = {
-        title: {
-            left: 'center',
-            text: 'Z-APP'
-        },
-        tooltip: {},
-        xAxis: {
-            name: '日期',
-            type: 'category',
-            data: ['05-01', '05-02', '05-03', '05-04', '05-05', '05-06', '05-07', '05-08', '05-11', '05-12']
-        },
-        yAxis: {
-            name: '面积/m²',
-            type: 'value'
-        },
-        series: [
-            {
-                name: '工作面积',
-                data: [200, 300, 170, 149, 244, 456, 657, 213, 34, 566],
-                type: 'bar'
+    function createChart() {
+        const barSimpleChart = echarts.init(document.getElementById('bar-simple'));
+        const optionBarSimple = {
+            title: {
+                left: 'center',
+                text: 'Z-APP'
             },
-        ]
+            tooltip: {},
+            xAxis: {
+                name: xText,
+                type: 'category',
+                data: xData
+            },
+            yAxis: {
+                name: yText,
+                type: 'value'
+            },
+            series: [
+                {
+                    name: yText,
+                    data: yData,
+                    type: 'bar'
+                },
+            ]
+        }
+        barSimpleChart.setOption(optionBarSimple)
     }
-    barSimpleChart.setOption(optionBarSimple)
+
+
 </script>

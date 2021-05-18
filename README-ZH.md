@@ -9,5 +9,8 @@
 ### HTML转图片
 ### PDF转图片
 ## 3.FILE
-### SNAP FILE 文件分享,阅后即焚
-## 4.PROFILE 个人中心
+### SNAP FILE
+## 4.EXCEL
+## 5.图表
+### EXCEL 转 图表
+![excel-to-chart](./readme/img.png)

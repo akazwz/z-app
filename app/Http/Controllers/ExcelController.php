@@ -29,7 +29,7 @@ class ExcelController extends Controller
             'A' => NumberFormat::FORMAT_DATE_YYYYMMDD
         ];
         $export = new InvoicesExport($data, $headings, $columnFormats);
-        $fileName = 'export.xlsx';
-        return Excel::download($export, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+        $fileName = 'export.xls';
+        return Excel::download($export, $fileName, \Maatwebsite\Excel\Excel::XLS);
     }
 }
