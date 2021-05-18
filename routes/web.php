@@ -17,28 +17,34 @@ use Illuminate\Support\Facades\Route;
 
 // PDF
 Route::prefix('pdf')->group(function () {
-    Route::get('/', function () {
+    Route::get('', function () {
         return view('pdf/pdf');
     });
-    Route::get('/link-to-pdf', function () {
+    Route::get('link-to-pdf', function () {
         return view('pdf/link_to_pdf');
     });
-    Route::get('/html-to-pdf', [ToPDFController::class, 'HtmlToPdf']);
-    Route::post('/is-url-valid', [ToPDFController::class, 'isURLValid']);
-    Route::get('/chose-pdf-option', function () {
-        return view('pdf/chose-pdf-option');
+    Route::get('html-to-pdf', [ToPDFController::class, 'HtmlToPdf']);
+    Route::post('is-url-valid', [ToPDFController::class, 'isURLValid']);
+    Route::get('chose-pdf-option', function () {
+        return view('pdf/chose_pdf_option');
     });
-    Route::get('/to-preview-pdf', [ToPDFController::class, 'toPreviewPDF']);
-    Route::get('/to-download-pdf', [ToPDFController::class, 'toDownloadPDF']);
+    Route::get('to-preview-pdf', [ToPDFController::class, 'toPreviewPDF']);
+    Route::get('to-download-pdf', [ToPDFController::class, 'toDownloadPDF']);
 });
 
 // CHART
 Route::prefix('chart')->group(function () {
-    Route::get('/', function () {
+    Route::get('', function () {
         return view('chart/chart');
     });
     Route::get('excel-to-chart', function () {
         return view('chart/excel_to_chart');
+    });
+    Route::get('chose-chart-option', function () {
+        return view('chart/chose_chart_option');
+    });
+    Route::get('to-bar-chart', function () {
+        return view('chart/bar_chart');
     });
 });
 

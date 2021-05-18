@@ -30,9 +30,10 @@
         </div>
 
         <div class="col-lg-6 col-12 column">
-            <button id="checkURL" type="button" class="btn btn-block btn-lg btn-info" onclick="uploadFile()">
-                <span id="toCheck">TO CHART </span>
+            <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled onclick="excelToChart()">
+                <span id="to-chart-span">TO CHART </span>
             </button>
+            <p id="file-name" style="display: inline"></p>
         </div>
 
         <div id="loadingDiv" class="col-lg-12 col-12 column">
@@ -47,22 +48,25 @@
 </footer>
 </html>
 <script>
+    const fileName = $('#file-name');
     function uploadFile() {
-        const files = $('#file').files;
+        const file = $('#file').get(0).files[0];
         const inputURL = $('#input-url');
+        const toChartBtn = $('#to-chart');
         $('#loading').css('visibility', 'visible')
         let data = new FormData()
-        data.append('file', files[0])
+        data.append('file', file)
         let config = {
             onUploadProgress: function (progressEvent) {
                 let complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
                 console.log('上传 ' + complete)
             }
         }
-        axios.post('/file-upload', data, config).then(res => {
+        axios.post('/api/file-upload', data, config).then(res => {
             $('#loading').css('display', 'none')
-            if (res.data.data.valid === true) {
-
+            if (res.data.code === 2000) {
+                fileName.text(res.data.data.file_name)
+                toChartBtn.removeAttr('disabled')
             } else {
                 $('#alertDanger').css('visibility', 'visible')
                 inputURL.setAttribute('background', 'red')
@@ -72,6 +76,10 @@
             $('#alertDanger').css('display', 'block')
             inputURL.css('background', 'red')
         })
+    }
+
+    function excelToChart() {
+        self.location.href = 'chose-chart-option?file_name=' + fileName.text()
     }
 
     function closeDanger() {
