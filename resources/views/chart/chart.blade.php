@@ -12,18 +12,8 @@
 <div class="container" style="width: 100%">
     <div class="row clearfix">
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info" onclick="linkToPDF()">
-                <span>LINK TO PDF </span>
-            </button>
-        </div>
-        <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info">
-                <span>HTML FILE TO PDF </span>
-            </button>
-        </div>
-        <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info">
-                <span>WORD TO PDF </span>
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="excelToChart()">
+                <span>EXCEL TO CHART </span>
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
@@ -39,8 +29,8 @@
 </footer>
 </html>
 <script>
-    function linkToPDF() {
-        self.location.href = 'pdf/link-to-pdf';
+    function excelToChart() {
+        self.location.href = '/chart/excel-to-chart';
     }
 </script>
 <style>

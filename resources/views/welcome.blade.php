@@ -28,6 +28,16 @@
         </div>
         <div class="col-lg-6 col-12 column">
             <button type="button" class="btn btn-block btn-lg btn-info">
+                <span>EXCEL </span>
+            </button>
+        </div>
+        <div class="col-lg-6 col-12 column">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toChart()">
+                <span>CHART </span>
+            </button>
+        </div>
+        <div class="col-lg-6 col-12 column">
+            <button type="button" class="btn btn-block btn-lg btn-info">
                 <span>PROFILE </span>
             </button>
         </div>
@@ -41,6 +51,9 @@
 <script>
     function toPDF() {
         self.location.href = '/pdf';
+    }
+    function toChart() {
+        self.location.href = '/chart';
     }
 </script>
 <style>

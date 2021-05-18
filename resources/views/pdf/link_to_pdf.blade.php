@@ -53,10 +53,10 @@
         let data = {
             url: url.val()
         }
-        axios.post('/is-url-valid', data).then(res => {
+        axios.post('/pdf/is-url-valid', data).then(res => {
             $('#loading').css('display', 'none')
             if (res.data.data.valid === true) {
-                self.location.href = '/chose-pdf-option?type=link&url=' + data.url;
+                self.location.href = '/pdf/chose-pdf-option?type=link&url=' + data.url;
             } else {
                 $('#alertDanger').css('visibility', 'visible')
                 inputURL.setAttribute('background', 'red')

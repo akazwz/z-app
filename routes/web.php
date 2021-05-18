@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExcelController;
-use App\Http\Controllers\HtmlToPdfController;
+use App\Http\Controllers\ToPDFController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,31 +15,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// PDF
+Route::prefix('pdf')->group(function () {
+    Route::get('/', function () {
+        return view('pdf/pdf');
+    });
+    Route::get('/link-to-pdf', function () {
+        return view('pdf/link_to_pdf');
+    });
+    Route::get('/html-to-pdf', [ToPDFController::class, 'HtmlToPdf']);
+    Route::post('/is-url-valid', [ToPDFController::class, 'isURLValid']);
+    Route::get('/chose-pdf-option', function () {
+        return view('pdf/chose-pdf-option');
+    });
+    Route::get('/to-preview-pdf', [ToPDFController::class, 'toPreviewPDF']);
+    Route::get('/to-download-pdf', [ToPDFController::class, 'toDownloadPDF']);
+});
+
+// CHART
+Route::prefix('chart')->group(function () {
+    Route::get('/', function () {
+        return view('chart/chart');
+    });
+    Route::get('excel-to-chart', function () {
+        return view('chart/excel_to_chart');
+    });
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/chart', function () {
-    return view('chart');
-});
+
 Route::get('/chart-no-animation', function () {
     return view('chart_no_animation');
 });
-Route::get('/pdf', function () {
-    return view('pdf/pdf');
-});
-Route::get('/link-to-pdf', function () {
-    return view('pdf/link_to_pdf');
-});
-Route::get('/chose-pdf-option', function () {
-    return view('pdf/chose-pdf-option');
-});
-Route::post('/is-url-valid', [HtmlToPdfController::class, 'isURLValid']);
-
-
-Route::get('/to-preview-pdf', [HtmlToPdfController::class, 'toPreviewPDF']);
-Route::get('/to-download-pdf', [HtmlToPdfController::class, 'toDownloadPDF']);
 
 Route::get('/export-excel', [ExcelController::class, 'exportExcel']);
 
-Route::get('/html-to-pdf', [HtmlToPdfController::class, 'HtmlToPdf']);
-Route::get('/html-to-image', [HtmlToPdfController::class, 'HtmlToImage']);
+
+Route::get('/html-to-image', [ToPDFController::class, 'HtmlToImage']);

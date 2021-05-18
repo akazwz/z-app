@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 use SnappyImage;
 use SnappyPDF;
 
-class HtmlToPdfController extends Controller
+class ToPDFController extends Controller
 {
     public function isURLValid(Request $request): JsonResponse
     {
