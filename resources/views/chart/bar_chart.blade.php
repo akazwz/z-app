@@ -7,7 +7,9 @@
     <link type="text/css" href="{{mix('css/app.css')}}"/>
 </head>
 <body>
-<div id="bar-simple" style="width: 100%;height: 300px"></div>
+<div id="chart-container">
+</div>
+
 </body>
 </html>
 <script>
@@ -30,10 +32,11 @@
 
 
     let xText = ''
-    let yText = ''
+    let yHead = []
     let xData = []
     let yData = []
     getBarChartData()
+
 
     function getBarChartData() {
         const params = {
@@ -41,20 +44,22 @@
         };
         axios.get('/api/chart/to-bar-chart-data', {
             params: params
-        }).then( (res) => {
+        }).then((res) => {
             if (res.data.code === 2000) {
-                xText = res.data.data.x_text
-                yText = res.data.data.y_text
-                xData = res.data.data.x_data
-                yData = res.data.data.y_data
+                const {y_head, y_data, x_data, x_text} = res.data.data;
+                xText = x_text
+                yHead = y_head
+                xData = x_data
+                yData = y_data
+                console.log(yData)
                 createChart()
             }
-        }).catch( (err) => {
+        }).catch((err) => {
+            //alert(err.toString())
         })
     }
 
     function createChart() {
-        const barSimpleChart = echarts.init(document.getElementById('bar-simple'));
         const optionBarSimple = {
             title: {
                 left: 'center',
@@ -67,7 +72,7 @@
                 data: xData
             },
             yAxis: {
-                name: yText,
+                name: '',
                 type: 'value'
             },
             toolbox: {
@@ -78,13 +83,36 @@
             },
             series: [
                 {
-                    name: yText,
-                    data: yData,
+                    name: '',
+                    data: [],
                     type: 'bar'
                 },
             ]
         }
-        barSimpleChart.setOption(optionBarSimple)
+
+        let str = ''
+        for (let i = 0; i < yHead.length; i++) {
+            optionBarSimple.yAxis.name = yHead[i]
+            optionBarSimple.series[0].name = yHead[i]
+            optionBarSimple.series[0].data = yData[i]
+            const uuid = generateUUID();
+            str = '<div id=' + uuid + ' style="width: 100%;height: 300px"></div>'
+            $('#chart-container').append(str)
+            echarts.init(document.getElementById(uuid)).setOption(optionBarSimple)
+        }
+
+    }
+
+    function generateUUID() {
+        let d = new Date().getTime();
+        if (window.performance && typeof window.performance.now === "function") {
+            d += performance.now(); //use high-precision timer if available
+        }
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
     }
 
 

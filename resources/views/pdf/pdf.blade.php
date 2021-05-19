@@ -12,6 +12,11 @@
 <div class="container" style="width: 100%">
     <div class="row clearfix">
         <div class="col-lg-6 col-12 column">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="parsePDF()">
+                <span>PARSE PDF </span>
+            </button>
+        </div>
+        <div class="col-lg-6 col-12 column">
             <button type="button" class="btn btn-block btn-lg btn-info" onclick="linkToPDF()">
                 <span>LINK TO PDF </span>
             </button>
@@ -39,8 +44,11 @@
 </footer>
 </html>
 <script>
-    function linkToPDF() {
+    function toLinkToPDF() {
         self.location.href = 'pdf/link-to-pdf';
+    }
+    function toParsePDF() {
+        self.location.href = 'pdf/parse-pdf';
     }
 </script>
 <style>
