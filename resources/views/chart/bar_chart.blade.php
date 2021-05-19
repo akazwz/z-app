@@ -70,6 +70,12 @@
                 name: yText,
                 type: 'value'
             },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {}
+                },
+            },
             series: [
                 {
                     name: yText,
