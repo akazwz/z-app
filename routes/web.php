@@ -30,6 +30,14 @@ Route::prefix('pdf')->group(function () {
     });
     Route::get('to-preview-pdf', [ToPDFController::class, 'toPreviewPDF']);
     Route::get('to-download-pdf', [ToPDFController::class, 'toDownloadPDF']);
+
+    Route::get('parse-pdf', function () {
+        return view('pdf/parse_pdf');
+    });
+
+    Route::get('show-parse-pdf', function () {
+        return view('pdf/show_parse_pdf');
+    });
 });
 
 // CHART

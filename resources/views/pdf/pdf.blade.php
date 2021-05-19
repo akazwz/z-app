@@ -12,12 +12,12 @@
 <div class="container" style="width: 100%">
     <div class="row clearfix">
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info" onclick="parsePDF()">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toParsePDF()">
                 <span>PARSE PDF </span>
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info" onclick="linkToPDF()">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toLinkToPDF()">
                 <span>LINK TO PDF </span>
             </button>
         </div>

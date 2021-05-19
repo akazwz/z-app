@@ -21,11 +21,16 @@ Route::prefix('chart')->group(function () {
     Route::get('to-bar-chart-data', [ChartController::class, 'GetToBarChartData']);
 });
 
+// CHART
+Route::prefix('pdf')->group(function () {
+    Route::get('parse', [PDFController::class, 'parsePdf']);
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::any('parse', [PDFController::class, 'parsePdf']);
+
 
 Route::post('file-upload', [FileController::class, 'UploadFile']);
 
