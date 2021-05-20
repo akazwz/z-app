@@ -27,7 +27,7 @@
 
     fileName = getQueryVariable('file_name')
     if (fileName === false) {
-        self.location.href = '/chart'
+        window.location.href = '/chart'
     }
 
 
@@ -55,7 +55,7 @@
                 createChart()
             }
         }).catch((err) => {
-            //alert(err.toString())
+            alert(err.toString())
         })
     }
 
@@ -96,7 +96,7 @@
             optionBarSimple.series[0].name = yHead[i]
             optionBarSimple.series[0].data = yData[i]
             const uuid = generateUUID();
-            str = '<div id=' + uuid + ' style="width: 100%;height: 300px"></div>'
+            str = '<div id=' + uuid + ' + style="width: 100%;height: 300px"></div>'
             $('#chart-container').append(str)
             echarts.init(document.getElementById(uuid)).setOption(optionBarSimple)
         }

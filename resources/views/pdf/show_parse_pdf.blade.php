@@ -60,7 +60,7 @@
 
     let fileName = getQueryVariable('file_name')
     if (fileName === false) {
-        self.location.href = '/chart'
+        window.location.href = '/chart'
     }
 
     getParsePDFData()
@@ -116,7 +116,6 @@
             alert(err.toString())
         })
     }
-
 </script>
 <style>
     .container {
@@ -212,17 +211,22 @@
     }
 
     @-webkit-keyframes bounce {
-        0%, 100% { -webkit-transform: scale(0.0) }
-        50% { -webkit-transform: scale(1.0) }
+        0%, 100% {
+            -webkit-transform: scale(0.0)
+        }
+        50% {
+            -webkit-transform: scale(1.0)
+        }
     }
 
     @keyframes bounce {
         0%, 100% {
             transform: scale(0.0);
             -webkit-transform: scale(0.0);
-        } 50% {
-              transform: scale(1.0);
-              -webkit-transform: scale(1.0);
-          }
+        }
+        50% {
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
     }
 </style>

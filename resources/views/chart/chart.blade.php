@@ -30,7 +30,7 @@
 </html>
 <script>
     function toExcelToChart() {
-        self.location.href = '/chart/excel-to-chart';
+        window.location.href = '/chart/excel-to-chart';
     }
 </script>
 <style>

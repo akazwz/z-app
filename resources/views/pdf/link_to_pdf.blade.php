@@ -56,12 +56,13 @@
         axios.post('/pdf/is-url-valid', data).then(res => {
             $('#loading').css('display', 'none')
             if (res.data.data.valid === true) {
-                self.location.href = '/pdf/chose-pdf-option?type=link&url=' + data.url;
+                window.location.href = '/pdf/chose-pdf-option?type=link&url=' + data.url;
             } else {
                 $('#alertDanger').css('visibility', 'visible')
                 inputURL.setAttribute('background', 'red')
             }
         }).catch(err => {
+            alert(err.toString())
             $('#loading').css('visibility', 'hidden')
             $('#alertDanger').css('display', 'block')
             inputURL.css('background', 'red')

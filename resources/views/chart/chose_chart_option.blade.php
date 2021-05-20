@@ -51,12 +51,12 @@
 
     let fileName = getQueryVariable('file_name')
     if (fileName === false) {
-        self.location.href = '/chart'
+        window.location.href = '/chart'
     }
 
     function toBarChart() {
         $('#loading').css('visibility', 'visible')
-        self.location.href = 'to-bar-chart?file_name=' + fileName
+        window.location.href = '/chart/to-bar-chart?file_name=' + fileName
     }
 </script>
 <style>
@@ -68,7 +68,6 @@
         text-align: center;
         font-size: 30px;
     }
-
 
     .input-url label {
         line-height: 200px;

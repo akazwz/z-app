@@ -74,6 +74,7 @@
                 inputURL.setAttribute('background', 'red')
             }
         }).catch(err => {
+            alert(err.toString())
             $('#loading').css('visibility', 'hidden')
             $('#alertDanger').css('display', 'block')
             inputURL.css('background', 'red')
@@ -81,7 +82,7 @@
     }
 
     function toShowParsePDF() {
-        self.location.href = 'show-parse-pdf?file_name=' + fileName.text()
+        window.location.href = '/pdf/show-parse-pdf?file_name=' + fileName.text()
     }
 
     function closeDanger() {

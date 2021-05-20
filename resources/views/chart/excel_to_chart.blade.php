@@ -49,6 +49,7 @@
 </html>
 <script>
     const fileName = $('#file-name');
+
     function uploadFile() {
         const file = $('#file').get(0).files[0];
         const inputURL = $('#input-url');
@@ -72,6 +73,7 @@
                 inputURL.setAttribute('background', 'red')
             }
         }).catch(err => {
+            alert(err.toString())
             $('#loading').css('visibility', 'hidden')
             $('#alertDanger').css('display', 'block')
             inputURL.css('background', 'red')
@@ -79,7 +81,7 @@
     }
 
     function excelToChart() {
-        self.location.href = 'chose-chart-option?file_name=' + fileName.text()
+        window.location.href = '/chart/chose-chart-option?file_name=' + fileName.text()
     }
 
     function closeDanger() {

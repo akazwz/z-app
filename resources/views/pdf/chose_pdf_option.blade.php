@@ -37,13 +37,14 @@
 </footer>
 </html>
 <script>
-    function getQueryVariable(variable)
-    {
+    function getQueryVariable(variable) {
         const query = window.location.search.substring(1);
         const vars = query.split("&");
-        for (let i=0; i<vars.length; i++) {
+        for (let i = 0; i < vars.length; i++) {
             const pair = vars[i].split("=");
-            if(pair[0] === variable){return pair[1];}
+            if (pair[0] === variable) {
+                return pair[1];
+            }
         }
         return false;
     }
@@ -51,18 +52,20 @@
     url = getQueryVariable('url')
     type = getQueryVariable('type')
     if (url === false) {
-        self.location.href = '/pdf'
+        window.location.href = '/pdf'
     }
     if (type === false) {
-        self.location.href = '/pdf'
+        window.location.href = '/pdf'
     }
+
     function toPreviewPDF() {
         $('#loading').css('visibility', 'visible')
-        self.location.href = '/pdf/to-preview-pdf?url=' + url + '&type=' + type;
+        window.location.href = '/pdf/to-preview-pdf?url=' + url + '&type=' + type;
     }
+
     function toDownloadPDF() {
         $('#loading').css('visibility', 'visible')
-        self.location.href = '/pdf/to-download-pdf?url=' + url + '&type=' + type;
+        window.location.href = '/pdf/to-download-pdf?url=' + url + '&type=' + type;
     }
 </script>
 <style>

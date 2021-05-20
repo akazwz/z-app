@@ -45,10 +45,11 @@
 </html>
 <script>
     function toLinkToPDF() {
-        self.location.href = 'pdf/link-to-pdf';
+        window.location.href = '/pdf/link-to-pdf';
     }
+
     function toParsePDF() {
-        self.location.href = 'pdf/parse-pdf';
+        window.location.href = '/pdf/parse-pdf';
     }
 </script>
 <style>
