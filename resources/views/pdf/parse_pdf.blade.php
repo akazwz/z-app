@@ -30,7 +30,8 @@
         </div>
 
         <div class="col-lg-6 col-12 column">
-            <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled onclick="toShowParsePDF()">
+            <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled
+                    onclick="toShowParsePDF()">
                 <span id="to-chart-span">TO PARSE </span>
             </button>
             <p id="file-name" style="display: none"></p>
@@ -49,6 +50,7 @@
 </html>
 <script>
     const fileName = $('#file-name');
+
     function uploadFile() {
         const file = $('#file').get(0).files[0];
         const inputURL = $('#input-url');

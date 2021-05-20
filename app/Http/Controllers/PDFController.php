@@ -12,11 +12,20 @@ class PDFController extends Controller
     /**
      * @throws Exception
      */
-    public function parsePdf()
+    public function parsePdf(Request $request): JsonResponse
     {
         $parser = new Parser();
 
-        $filePath = storage_path('app/public/file/' . '1588849738d7a73d408ca7d479.pdf');
+        $fileName = $request->query('file_name');
+        if (is_null($fileName)) {
+            $res = [
+                'code' => 4000,
+                'msg' => 'SUCCESS',
+            ];
+            return response()->json($res);
+        }
+
+        $filePath = storage_path('app/public/file/' . $fileName);
         $pdf = $parser->parseFile($filePath);
 
         $pages = $pdf->getPages();
@@ -36,6 +45,6 @@ class PDFController extends Controller
             'data' => $data
         ];
         $res = mb_convert_encoding($res,'UTF-8', 'auto');
-        return json_encode($res);
+        return response()->json($res);
     }
 }
