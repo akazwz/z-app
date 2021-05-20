@@ -11,7 +11,12 @@
 </header>
 <body class="card-body" style="width: 100%">
 <div class="container" style="width: 100%">
-    <div id="show-parse-pdf">
+    <div class="spinner" id="loading">
+        <h1>Loading</h1>
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <div id="show-parse-pdf" style="display: none">
         <div>
             <p>PDF-DETAILS:</p>
             <div id="pdf-details">
@@ -31,7 +36,6 @@
             <br>
             <p>PDF-TEXTS:</p>
             <div id="pdf-text">
-
             </div>
         </div>
     </div>
@@ -70,9 +74,10 @@
         }).then((res) => {
             let details;
             let texts;
+            let str = '';
             if (res.data.code === 2000) {
-                details = res.data.data.details
-                texts = res.data.data.texts
+                const {details: details1, texts: texts1} = res.data.data;
+                details = details1
                 const {
                     Creator,
                     Comments,
@@ -99,40 +104,17 @@
                 $('#source-modified').text(SourceModified)
                 $('#subject').text(Subject)
                 $('#title').text(Title)
+                texts = texts1
+                for (let i = 0; i < texts.length; i++) {
+                    str += '<details><summary> ' + 'PAGE' + (i + 1) + '</summary>' + texts[i] + '</details>'
+                }
+                $('#loading').css('display', 'none')
+                $('#show-parse-pdf').css('display', 'block')
+                $('#pdf-text').html(str)
             }
         }).catch((err) => {
-            //alert(err.toString())
+            alert(err.toString())
         })
-    }
-
-    function addHtml() {
-        let details;
-        const {
-            Creator,
-            Comments,
-            Title,
-            Subject,
-            Keywords,
-            Company,
-            CreationDate,
-            Pages,
-            Author,
-            SourceModified,
-            ModDate,
-            Producer
-        } = details;
-        $('#author').text(Author)
-        $('#comments').text(Comments)
-        $('#company').text(Company)
-        $('#creation-date').text(CreationDate)
-        $('#creator').text(Creator)
-        $('#keywords').text(Keywords)
-        $('#mod-date').text(ModDate)
-        $('#pages').text(Pages)
-        $('#producer').text(Producer)
-        $('#source-modified').text(SourceModified)
-        $('#subject').text(Subject)
-        $('#title').text(Title)
     }
 
 </script>
@@ -200,5 +182,47 @@
     .foot p {
         text-align: center;
         font-family: "Times New Roman", Times, serif;
+    }
+
+    .spinner {
+        width: 100px;
+        height: 100px;
+
+        position: relative;
+        margin: 100px auto;
+    }
+
+    .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #6cb2eb;
+        opacity: 1;
+        position: absolute;
+        top: 40px;
+        left: 0;
+
+        -webkit-animation: bounce 2.0s infinite ease-in-out;
+        animation: bounce 2.0s infinite ease-in-out;
+    }
+
+    .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes bounce {
+        0%, 100% { -webkit-transform: scale(0.0) }
+        50% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        } 50% {
+              transform: scale(1.0);
+              -webkit-transform: scale(1.0);
+          }
     }
 </style>
