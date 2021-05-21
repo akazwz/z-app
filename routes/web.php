@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ToPDFController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,8 +41,15 @@ Route::prefix('pdf')->group(function () {
     });
 
     Route::get('word-to-pdf', function () {
-       return view('pdf/word_to_pdf');
+        return view('pdf/word_to_pdf');
     });
+
+    Route::get('chose-word-to-pdf-option', function () {
+        return view('pdf/chose_word_to_pdf_option');
+    });
+
+    Route::get('word-to-pdf-preview', [PDFController::class, 'wordToPDFPreview']);
+    Route::get('word-to-pdf-download', [PDFController::class, 'wordToPDFDownload']);
 });
 
 // CHART

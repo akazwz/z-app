@@ -59,7 +59,7 @@
                 window.location.href = '/pdf/chose-pdf-option?type=link&url=' + data.url;
             } else {
                 $('#alertDanger').css('visibility', 'visible')
-                inputURL.setAttribute('background', 'red')
+                inputURL.css('background', 'red')
             }
         }).catch(err => {
             alert(err.toString())

@@ -27,7 +27,7 @@
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toWordToPDF()">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toWordTOPDF()">
                 <span>WORD TO PDF </span>
             </button>
         </div>

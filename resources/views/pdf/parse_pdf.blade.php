@@ -71,7 +71,7 @@
                 toChartBtn.removeAttr('disabled')
             } else {
                 $('#alertDanger').css('visibility', 'visible')
-                inputURL.setAttribute('background', 'red')
+                inputURL.css('background', 'red')
             }
         }).catch(err => {
             alert(err.toString())

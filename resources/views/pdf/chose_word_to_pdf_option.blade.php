@@ -7,34 +7,22 @@
     <script src="{{mix('js/app.js')}}"></script>
 </head>
 <header class="head">
-    <h4>WORD TO PDF</h4>
+    <h4>OPTION</h4>
 </header>
 <body class="card-body" style="width: 100%">
 <div class="container" style="width: 100%">
     <div class="row clearfix">
 
-        <div class="col-lg-12 col-12 column">
-            <div id="alertDanger" class="alert alert-danger alert-dismissible fade show" style="display: none">
-                <i id="closeDanger" class="close" onclick="closeDanger()">&times;</i>
-                <strong>WARNING!</strong> Check The FILE
-            </div>
-        </div>
-
         <div class="col-lg-6 col-12 column">
-            <div id="input-url" class="input-url">
-                <label> FILE:
-                    <input id="file" type="file" class="form-control-lg" accept="application/msword"
-                           placeholder="Choose File" onchange="uploadFile()">
-                </label>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-12 column">
-            <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled
-                    onclick="toChosePDFOption()">
-                <span id="to-chart-span">TO PARSE </span>
+            <button id="previewBtn" type="button" class="btn btn-block btn-lg btn-info" onclick="toPreviewPDF()">
+                <span id="preview">PREVIEW </span>
             </button>
-            <p id="file-name" style="display: none"></p>
+        </div>
+
+        <div class="col-lg-6 col-12 column">
+            <button id="downloadBtn" type="button" class="btn btn-block btn-lg btn-info" onclick="toDownloadPDF()">
+                <span id="download">DOWNLOAD </span>
+            </button>
         </div>
 
         <div id="loadingDiv" class="col-lg-12 col-12 column">
@@ -49,44 +37,31 @@
 </footer>
 </html>
 <script>
-    const fileName = $('#file-name');
-
-    function uploadFile() {
-        const file = $('#file').get(0).files[0];
-        const inputURL = $('#input-url');
-        const toChartBtn = $('#to-chart');
-        $('#loading').css('visibility', 'visible')
-        let data = new FormData()
-        data.append('file', file)
-        let config = {
-            onUploadProgress: function (progressEvent) {
-                let complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
-                console.log('上传 ' + complete)
+    function getQueryVariable(variable) {
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return pair[1];
             }
         }
-        axios.post('/api/file-upload', data, config).then(res => {
-            $('#loading').css('display', 'none')
-            if (res.data.code === 2000) {
-                fileName.text(res.data.data.file_name)
-                toChartBtn.removeAttr('disabled')
-            } else {
-                $('#alertDanger').css('visibility', 'visible')
-                inputURL.setAttribute('background', 'red')
-            }
-        }).catch(err => {
-            alert(err.toString())
-            $('#loading').css('visibility', 'hidden')
-            $('#alertDanger').css('display', 'block')
-            inputURL.css('background', 'red')
-        })
+        return false;
     }
 
-    function toChosePDFOption() {
-        window.location.href = '/pdf/chose-word-to-pdf-option?file_name=' + fileName.text()
+    fileName = getQueryVariable('file_name')
+    if (fileName === false) {
+        window.location.href = '/pdf'
     }
 
-    function closeDanger() {
-        $('#alertDanger').css('display', 'none')
+    function toPreviewPDF() {
+        $('#loading').css('visibility', 'visible')
+        window.location.href = '/pdf/word-to-pdf-preview?file_name=' + fileName
+    }
+
+    function toDownloadPDF() {
+        $('#loading').css('visibility', 'visible')
+        window.location.href = '/pdf/word-to-pdf-download?file_name=' + fileName
     }
 </script>
 <style>

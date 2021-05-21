@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Settings;
@@ -54,7 +53,10 @@ class PDFController extends Controller
     }
 
 
-    public function wordToPDFPreview(Request $request): Response|JsonResponse
+    /**
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function wordToPDFPreview(Request $request)
     {
         $res = $this->wordToPDF($request);
         if (count($res) > 1) {
@@ -66,7 +68,10 @@ class PDFController extends Controller
         return PDF::inline($fileName);
     }
 
-    public function wordToPDFDownload(Request $request): Response|JsonResponse
+    /**
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function wordToPDFDownload(Request $request)
     {
         $res = $this->wordToPDF($request);
         if (count($res) > 1) {
@@ -78,6 +83,9 @@ class PDFController extends Controller
         return PDF::download($fileName);
     }
 
+    /**
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
     public function wordToPDF(Request $request): array
     {
         $domPdfPath = base_path('vendor/dompdf/dompdf');
@@ -91,7 +99,7 @@ class PDFController extends Controller
             ];
         }
         $filePath = storage_path('app/public/file/' . $fileName);
-        $Content = IOFactory::load($filePath);
+        $Content = IOFactory::load($filePath, 'MsDoc');
 
         $PDFWriter = IOFactory::createWriter($Content, 'PDF');
         $saveFilName = Uuid::uuid4() . '.pdf';
