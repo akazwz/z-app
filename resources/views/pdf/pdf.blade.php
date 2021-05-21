@@ -27,7 +27,7 @@
             </button>
         </div>
         <div class="col-lg-6 col-12 column">
-            <button type="button" class="btn btn-block btn-lg btn-info">
+            <button type="button" class="btn btn-block btn-lg btn-info" onclick="toWordToPDF()">
                 <span>WORD TO PDF </span>
             </button>
         </div>
@@ -50,6 +50,10 @@
 
     function toParsePDF() {
         window.location.href = '/pdf/parse-pdf';
+    }
+
+    function toWordTOPDF() {
+        window.location.href = '/pdf/word-to-pdf';
     }
 </script>
 <style>

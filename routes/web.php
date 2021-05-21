@@ -38,6 +38,10 @@ Route::prefix('pdf')->group(function () {
     Route::get('show-parse-pdf', function () {
         return view('pdf/show_parse_pdf');
     });
+
+    Route::get('word-to-pdf', function () {
+       return view('pdf/word_to_pdf');
+    });
 });
 
 // CHART

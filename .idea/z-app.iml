@@ -144,6 +144,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sail" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/smalot/pdfparser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-zendframework-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-escaper" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpword" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

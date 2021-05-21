@@ -7,7 +7,7 @@
     <script src="{{mix('js/app.js')}}"></script>
 </head>
 <header class="head">
-    <h4>PARSE PDF</h4>
+    <h4>WORD TO PDF</h4>
 </header>
 <body class="card-body" style="width: 100%">
 <div class="container" style="width: 100%">
@@ -31,7 +31,7 @@
 
         <div class="col-lg-6 col-12 column">
             <button id="to-chart" type="button" class="btn btn-block btn-lg btn-info" disabled
-                    onclick="toShowParsePDF()">
+                    onclick="toChosePDFOption()">
                 <span id="to-chart-span">TO PARSE </span>
             </button>
             <p id="file-name" style="display: none"></p>
@@ -81,8 +81,8 @@
         })
     }
 
-    function toShowParsePDF() {
-        window.location.href = '/pdf/show-parse-pdf?file_name=' + fileName.text()
+    function toChosePDFOption() {
+        window.location.href = '/pdf/chose-pdf-option?file_name=' + fileName.text()
     }
 
     function closeDanger() {
