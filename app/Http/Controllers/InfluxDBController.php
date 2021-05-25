@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\ZTools\InFluxDBClient;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class InfluxDBController extends Controller
+{
+    private InFluxDBClient $inFluxDB;
+
+    public function __construct()
+    {
+        $url = 'https://t.icegps.com:8086';
+        $token = 'pfhOwuap{Ipz1N|5gv3DcO';
+        $this->inFluxDB = new InFluxDBClient($url, $token);
+    }
+
+    public function queryData(): JsonResponse
+    {
+
+    }
+
+    public function getWorkTime(Request $request): JsonResponse
+    {
+        $sn = $request->get('sn', '1140201213940');
+        $startDateStr = $request->get('start', '2021-04-01');
+        $stopDateStr = $request->get('stop', '2021-05-01');
+        $start = gmdate(DATE_ATOM, strtotime($startDateStr));
+        $stop = gmdate(DATE_ATOM, strtotime($stopDateStr));
+
+        $workData = $this->getWorkTimeData($sn, $start, $stop);
+        $workHoursData = [];
+        foreach ($workData as $data) {
+            $workDateStr = $data->records[0]->values['_start'];
+            $workDate = date('Y-m-d', strtotime($workDateStr));
+            $workCount = $data->records[0]->values['_value'];
+            $workHours = round($workCount / 12 / 60, 2);
+            array_push($workHoursData, [$workDate => $workHours]);
+        }
+        return response()->json($workHoursData);
+    }
+
+    public function getWorkTimeData($sn, $start, $stop, $auto = null, $interval = '24h'): array
+    {
+        if (!isset($auto)) {
+            $auto = '0 or r["_value"] == 1';
+        }
+        $queryStr = 'from(bucket: "track")
+            |> range(start: ' . $start . ', stop: ' . $stop . ')
+            |> filter(fn: (r) => r["_measurement"] == "motion")
+            |> filter(fn: (r) => r["_field"] == "auto")
+            |> filter(fn: (r) => r["sn"] == "' . $sn . '")
+            |> filter(fn: (r) => r["_value"] ==' . $auto . ')
+            |> window(every: ' . $interval . ')
+            |> count()';
+        return $this->inFluxDB->query($queryStr);
+    }
+}

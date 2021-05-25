@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\InfluxDBController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post('file-upload', [FileController::class, 'UploadFile']);
+Route::get('query-data', [InfluxDBController::class, 'queryData']);
+Route::get('work-time', [InfluxDBController::class, 'getWorkTime']);
 
 Route::resource('/book', 'BookController');
