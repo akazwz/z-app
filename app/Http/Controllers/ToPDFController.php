@@ -40,7 +40,7 @@ class ToPDFController extends Controller
         $url = $request->query('url');
         $type = $request->query('type');
         return match ($type) {
-            'link' => SnappyPD::FloadFile($url)->inline(),
+            'link' => SnappyPDF::loadFile($url)->inline(),
             'html' => SnappyPDF::loadHTML('<h1>WE ARE DOING THIS</h1>')->inline(),
             default => 'error',
         };
