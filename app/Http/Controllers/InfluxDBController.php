@@ -12,14 +12,14 @@ class InfluxDBController extends Controller
 
     public function __construct()
     {
-        $url = 'https://t.icegps.com:8086';
-        $token = 'pfhOwuap{Ipz1N|5gv3DcO';
+        $url = env('INFLUXDB_URL');
+        $token = env('INFLUXDB_TOKEN');
         $this->inFluxDB = new InFluxDBClient($url, $token);
     }
 
     public function queryData(): JsonResponse
     {
-
+        return response()->json('');
     }
 
     public function getWorkTime(Request $request): JsonResponse
