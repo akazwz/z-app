@@ -42,7 +42,15 @@ class InfluxDBController extends Controller
         return response()->json($workHoursData);
     }
 
-    public function getWorkTimeData($sn, $start, $stop, $auto = null, $interval = '24h'): array
+    /**
+     * @param $sn
+     * @param $start
+     * @param $stop
+     * @param null $auto
+     * @param string $interval
+     * @return array
+     */
+    public function getWorkTimeData($sn, $start, $stop, $auto = null, string $interval = '24h'): array
     {
         if (!isset($auto)) {
             $auto = '0 or r["_value"] == 1';

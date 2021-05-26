@@ -48,15 +48,15 @@ class BookController extends Controller
     {
         $code = 2000;
         $msg = 'success';
-        $data = ['name' => 'Z-APP' , 'author' => 'zwz'];
+        $data = ['name' => 'Z-APP', 'author' => 'zwz'];
         return $this->createSuccess($code, $msg, $data);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return void
      */
     public function show(Book $book)
     {
@@ -66,8 +66,8 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return void
      */
     public function edit(Book $book)
     {
@@ -78,8 +78,8 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return void
      */
     public function update(Request $request, Book $book)
     {
@@ -89,8 +89,8 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return void
      */
     public function destroy(Book $book)
     {

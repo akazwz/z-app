@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Settings;
@@ -56,7 +57,7 @@ class PDFController extends Controller
     /**
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
-    public function wordToPDFPreview(Request $request)
+    public function wordToPDFPreview(Request $request): Response|JsonResponse
     {
         $res = $this->wordToPDF($request);
         if (count($res) > 1) {
@@ -71,7 +72,7 @@ class PDFController extends Controller
     /**
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
-    public function wordToPDFDownload(Request $request)
+    public function wordToPDFDownload(Request $request): Response|JsonResponse
     {
         $res = $this->wordToPDF($request);
         if (count($res) > 1) {
