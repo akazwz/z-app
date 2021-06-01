@@ -33,12 +33,11 @@ class InfluxDBController extends Controller
         $start = gmdate(DATE_ATOM, strtotime($startDateStr));
         $stop = gmdate(DATE_ATOM, strtotime($stopDateStr));
 
-
         $time = $this->getWorkTime($sn, $start, $stop);
         $distanceAndArea = $this->getWorkDistanceAndArea($sn, $start, $stop);
 
         $data = [];
-
+        // 合并数据
         for ($i = 0; $i < count($time); $i++) {
             if ($time[$i]['day'] == $distanceAndArea[$i]['day']) {
                 $arr = [
