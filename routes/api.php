@@ -32,9 +32,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-
 Route::post('file-upload', [FileController::class, 'UploadFile']);
-Route::get('query-data', [InfluxDBController::class, 'queryData']);
-Route::get('work-time', [InfluxDBController::class, 'getWorkTime']);
+Route::get('work-data', [InfluxDBController::class, 'getWorkData']);
 
 Route::resource('/book', 'BookController');

@@ -23,6 +23,7 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
+        "@amap/amap-jsapi-loader": "^1.0.1",
         "echarts": "^5.1.1",
         "jquery": "^3.6.0"
     }

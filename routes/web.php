@@ -76,6 +76,14 @@ Route::get('/chart-no-animation', function () {
     return view('chart_no_animation');
 });
 
+Route::get('/map', function () {
+    return view('map/index');
+});
+
+Route::get('/calculate', function () {
+    return view('map/calculate_area_and_distance');
+});
+
 Route::get('/export-excel', [ExcelController::class, 'exportExcel']);
 
 

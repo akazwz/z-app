@@ -141,6 +141,9 @@
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-escaper" />
       <path value="$PROJECT_DIR$/vendor/phpoffice/phpword" />
       <path value="$PROJECT_DIR$/vendor/influxdata/influxdb-client-php" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/path-util" />
+      <path value="$PROJECT_DIR$/vendor/chenos/v8js-module-loader" />
+      <path value="$PROJECT_DIR$/vendor/alexpechkarev/geometry-library" />
     </include_path>
   </component>
   <component name="PhpProjectServersManager">

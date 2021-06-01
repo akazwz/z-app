@@ -148,8 +148,13 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-escaper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpword" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/influxdata/influxdb-client-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/path-util" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/chenos/v8js-module-loader" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/alexpechkarev/geometry-library" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="loader" level="application" />
+    <orderEntry type="library" name="demo-center" level="application" />
   </component>
 </module>

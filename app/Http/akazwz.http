@@ -1,0 +1,9 @@
+POST https://api.akazwz.com/v1/token
+Content-Type: application/json
+
+{
+    "username": "zwz",
+    "password": "123456"
+}
+
+###
