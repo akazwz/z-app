@@ -18,20 +18,31 @@ class InfluxDBController extends Controller
         $this->inFluxDB = new InFluxDBClient($url, $token);
     }
 
+    public function getWorkExcel(Request $request)
+    {
+        $workData = $this->getWorkData($request);
+    }
+
     /**
-     * 获取工作数据
+     * 获取工作数据,格式为 ['day' => '2021-03-07', 'time' => 5.7, 'distance' => 37087.67, 'area' => 456.78]
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    public function getWorkData(Request $request): JsonResponse
+    public function getWorkData(Request $request): array
     {
         ini_set('memory_limit', '256M');
         $sn = $request->get('sn', '1140201213940');
         $interval = $request->get('interval', '24h');
-        $startDateStr = $request->get('start', '2021-04-01');
-        $stopDateStr = $request->get('stop', '2021-05-02');
-        $start = gmdate(DATE_ATOM, strtotime($startDateStr));
-        $stop = gmdate(DATE_ATOM, strtotime($stopDateStr));
+        $startDateStr = $request->get('start', '2021-06-01');
+        $stopDateStr = $request->get('stop', '2021-06-04');
+        /*$start = gmdate(DATE_ATOM, strtotime($startDateStr));
+        $stop = gmdate(DATE_ATOM, strtotime($stopDateStr));*/
+        $start = strtotime($startDateStr) * 1000 * 1000;
+        $stop = strtotime($stopDateStr) * 1000 * 1000;
+
+
+        var_dump($start);
+        var_dump($stop);
 
         $time = $this->getWorkTime($sn, $start, $stop);
         $distanceAndArea = $this->getWorkDistanceAndArea($sn, $start, $stop);
@@ -49,8 +60,7 @@ class InfluxDBController extends Controller
                 array_push($data, $arr);
             }
         }
-
-        return response()->json($data);
+        return $data;
     }
 
 
@@ -132,13 +142,14 @@ class InfluxDBController extends Controller
             $auto = '0 or r["_value"] == 1';
         }
         $queryStr = 'from(bucket: "track")
-            |> range(start: ' . $start . ', stop: ' . $stop . ')
+            |> range(start: time(v: ' .$start. '), stop: time(v: '.$stop.'))
             |> filter(fn: (r) => r["_measurement"] == "motion")
             |> filter(fn: (r) => r["_field"] == "auto")
             |> filter(fn: (r) => r["sn"] == "' . $sn . '")
             |> filter(fn: (r) => r["_value"] ==' . $auto . ')
             |> window(every: ' . $interval . ')
             |> count()';
+        var_dump($queryStr);
         return $this->inFluxDB->query($queryStr);
     }
 
@@ -159,7 +170,7 @@ class InfluxDBController extends Controller
         }
         $queryStr = 'import "influxdata/influxdb/schema"
             from(bucket: "track")
-            |> range(start: ' . $start . ', stop: ' . $stop . ')
+            |> range(start: time(v: ' . $start . '. ), stop: time(v: ' . $stop . '. ))
             |> filter(fn: (r) => r["_measurement"] == "motion")
             |> filter(fn: (r) => r["sn"] == "' . $sn . '")
             |> schema.fieldsAsCols()
@@ -180,6 +191,6 @@ class InfluxDBController extends Controller
     {
         $distance = SphericalUtil::computeLength($path);
         $area = SphericalUtil::computeArea($path);
-        return ['distance' => $distance, 'area' => $area];
+        return ['distance' => round($distance, 2), 'area' => round((float)$area, 2)];
     }
 }
