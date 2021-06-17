@@ -38,7 +38,7 @@ class InFluxDBClient
         $this->writeApi->write($data, $precision, $bucket);
     }
 
-    public function query($queryStr): ?array
+    public function query($queryStr): array
     {
         return $this->queryApi->query($queryStr);
     }

@@ -26,23 +26,20 @@ class InfluxDBController extends Controller
     /**
      * 获取工作数据,格式为 ['day' => '2021-03-07', 'time' => 5.7, 'distance' => 37087.67, 'area' => 456.78]
      * @param Request $request
-     * @return array
+     * @return string|false
      */
-    public function getWorkData(Request $request): array
+    public function getWorkData(Request $request): bool|string
     {
         ini_set('memory_limit', '256M');
         $sn = $request->get('sn', '1140201213940');
-        $interval = $request->get('interval', '24h');
+        $interval = $request->get('interval', '8h');
         $startDateStr = $request->get('start', '2021-06-01');
-        $stopDateStr = $request->get('stop', '2021-06-04');
-        /*$start = gmdate(DATE_ATOM, strtotime($startDateStr));
-        $stop = gmdate(DATE_ATOM, strtotime($stopDateStr));*/
-        $start = strtotime($startDateStr) * 1000 * 1000;
-        $stop = strtotime($stopDateStr) * 1000 * 1000;
+        $stopDateStr = $request->get('stop', '2021-06-09');
+        $start = gmdate(DATE_RFC3339, strtotime($startDateStr));
+        $stop = gmdate(DATE_RFC3339, strtotime($stopDateStr));
 
-
-        var_dump($start);
-        var_dump($stop);
+        /*$start = strtotime($startDateStr) * 1000 * 1000 * 1000;
+        $stop = strtotime($stopDateStr) * 1000 * 1000 * 1000;*/
 
         $time = $this->getWorkTime($sn, $start, $stop);
         $distanceAndArea = $this->getWorkDistanceAndArea($sn, $start, $stop);
@@ -60,7 +57,7 @@ class InfluxDBController extends Controller
                 array_push($data, $arr);
             }
         }
-        return $data;
+        return json_encode($data);
     }
 
 
@@ -73,18 +70,49 @@ class InfluxDBController extends Controller
      * @param string $interval
      * @return array
      */
-    public function getWorkTime($sn, $start, $stop, $auto = null, string $interval = '24h'): array
+    public function getWorkTime($sn, $start, $stop, $auto = null, string $interval = '8h'): array
     {
         $workTimeData = $this->getWorkTimeData($sn, $start, $stop, $auto, $interval);
+
         $workTime = [];
+        $workData = [];
+
         foreach ($workTimeData as $data) {
-            $workDateStr = $data->records[0]->values['_start'];
-            $workDate = date('Y-m-d', strtotime($workDateStr));
-            $workCount = $data->records[0]->values['_value'];
-            $workHours = round($workCount / 12 / 60, 2);
-            array_push($workTime, ['day' => $workDate, 'time' => $workHours]);
+            $dateStr = $data->records[0]->values['_start'];
+            $count = $data->records[0]->values['_value'];
+            $date = date('Y-m-d', strtotime($dateStr));
+            array_push($workData, ['day' => $date, 'count' => $count]);
         }
-        return $workTime;
+
+        foreach ($workData as $v) {
+            if (!isset($workTime[$v['day']])) {
+                $workTime[$v['day']] = $v;
+            } else {
+                $workTime[$v['day']]['count'] += $v['count'];
+            }
+        }
+
+        $workTimeHours = [];
+
+        foreach ($workTime as $data) {
+            $hours = round($data['count'] / 12 / 60, 2);
+            array_push($workTimeHours, ['day' => $data['day'], 'time' => $hours]);
+        }
+
+        /*foreach ($workTimeData as $dailyDatum) {
+            $dailyDateStr = $dailyDatum[0]->records[0]->values['_start'];
+            $dailyDate = date('Y-m-d', strtotime($dailyDateStr));
+            $dailyCount = [];
+            foreach ($dailyDatum as $data) {
+                $workCountEveryEight = $data->records[0]->values['_value'];
+                array_push($dailyCount, $workCountEveryEight);
+            }
+            $dailyCountSum = array_sum($dailyCount);
+            $dailyWorkHours = round($dailyCountSum / 12 / 60, 2);
+            array_push($workTime, ['day' => $dailyDate, 'time' => $dailyWorkHours]);
+        }*/
+
+        return $workTimeHours;
     }
 
 
@@ -97,10 +125,11 @@ class InfluxDBController extends Controller
      * @param string $interval
      * @return array
      */
-    public function getWorkDistanceAndArea($sn, $start, $stop, $auto = null, string $interval = '24h'): array
+    public function getWorkDistanceAndArea($sn, $start, $stop, $auto = null, string $interval = '8h'): array
     {
         $workLngAndLatData = $this->getWorkLngAndLatData($sn, $start, $stop, $auto, $interval);
         $dateAndLngLat = [];
+
         foreach ($workLngAndLatData as $data) {
             $workDateStr = $data->records[0]->values["_start"];
             $workDate = date('Y-m-d', strtotime($workDateStr));
@@ -112,17 +141,66 @@ class InfluxDBController extends Controller
                 $arr = ['lat' => $lat, 'lng' => $lng];
                 array_push($workLonLat, $arr);
             }
-            array_push($dateAndLngLat, [$workDate, $workLonLat]);
+            array_push($dateAndLngLat, ['day' => $workDate, 'path' => $workLonLat]);
         }
-        //2021-04-01,148606,79521
-        //2021-04-01,148332.8899477752,79432.1383288722
+        $workPath = [];
+        foreach ($dateAndLngLat as $index => $data) {
+            if (!isset($workPath[$data['day']])) {
+                $workPath[$data['day']]['path'] = $data['path'];
+            } else {
+                foreach ($data['path'] as $i => $val) {
+                    array_push($workPath[$data['day']]['path'], $data['path'][$i]);
+                }
+
+            }
+        }
+
         $distanceAndArea = [];
-        foreach ($dateAndLngLat as $data) {
-            $date = $data[0];
-            $pathData = $data[1];
+
+        foreach ($workPath as $index => $data) {
+            $date = $index;
+            $pathData = $data['path'];
             $computedData = $this->compute($pathData);
             array_push($distanceAndArea, ['day' => $date, 'distance' => $computedData['distance'], 'area' => $computedData['area']]);
         }
+
+        /* $arr = [
+             [
+                 'day' => '2021-01-01', 'path' => [
+                     ['lat' => 20.00, 'lng' => 20.00],
+                     ['lat' => 21.00, 'lng' => 21.00],
+                     ['lat' => 22.00, 'lng' => 22.00],
+                 ]
+             ],
+             [
+                 'day' => '2021-01-01', 'path' => [
+                     ['lat' => 23.00, 'lng' => 23.00],
+                     ['lat' => 24.00, 'lng' => 24.00],
+                     ['lat' => 25.00, 'lng' => 25.00],
+                 ]
+             ],
+             [
+                 'day' => '2021-01-01', 'path' => [
+                     ['lat' => 26.00, 'lng' => 26.00],
+                     ['lat' => 27.00, 'lng' => 27.00],
+                     ['lat' => 28.00, 'lng' => 28.00],
+                 ]
+             ],
+         ];
+
+         $arrTemp = [];
+
+         foreach ($arr as $index => $data) {
+             if (!isset($arrTemp[$data['day']])) {
+                 $arrTemp[$data['day']]['path'] = $data['path'];
+             } else {
+                 foreach ($data['path'] as $i => $val) {
+                     array_push($arrTemp[$data['day']]['path'], $data['path'][$i]);
+                 }
+
+             }
+         }*/
+
         return $distanceAndArea;
     }
 
@@ -136,20 +214,19 @@ class InfluxDBController extends Controller
      * @param string $interval
      * @return array
      */
-    public function getWorkTimeData($sn, $start, $stop, $auto = null, string $interval = '24h'): array
+    public function getWorkTimeData($sn, $start, $stop, $auto = null, string $interval = '8h'): array
     {
         if (!isset($auto)) {
             $auto = '0 or r["_value"] == 1';
         }
         $queryStr = 'from(bucket: "track")
-            |> range(start: time(v: ' .$start. '), stop: time(v: '.$stop.'))
+            |> range(start: ' . $start . ', stop: ' . $stop . ')
             |> filter(fn: (r) => r["_measurement"] == "motion")
             |> filter(fn: (r) => r["_field"] == "auto")
             |> filter(fn: (r) => r["sn"] == "' . $sn . '")
             |> filter(fn: (r) => r["_value"] ==' . $auto . ')
             |> window(every: ' . $interval . ')
             |> count()';
-        var_dump($queryStr);
         return $this->inFluxDB->query($queryStr);
     }
 
@@ -163,14 +240,14 @@ class InfluxDBController extends Controller
      * @param string $interval
      * @return array
      */
-    public function getWorkLngAndLatData($sn, $start, $stop, $auto = null, string $interval = '24h'): array
+    public function getWorkLngAndLatData($sn, $start, $stop, $auto = null, string $interval = '8h'): array
     {
         if (!isset($auto)) {
             $auto = '0 or r["_value"] == 1';
         }
         $queryStr = 'import "influxdata/influxdb/schema"
             from(bucket: "track")
-            |> range(start: time(v: ' . $start . '. ), stop: time(v: ' . $stop . '. ))
+            |> range(start: ' . $start . ', stop: ' . $stop . ')
             |> filter(fn: (r) => r["_measurement"] == "motion")
             |> filter(fn: (r) => r["sn"] == "' . $sn . '")
             |> schema.fieldsAsCols()
