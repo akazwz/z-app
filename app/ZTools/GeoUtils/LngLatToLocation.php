@@ -1,22 +1,22 @@
 <?php
 
-namespace App\ZTools;
+namespace App\ZTools\GeoUtils;
 
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class GeoUtils
+class LngLatToLocation
 {
     private Client $client;
     private string $key;
     private mixed $geocodeData;
 
-    public function __construct(string $key)
+    public function __construct(string $key, int $timeout = 10)
     {
         $this->client = new Client([
             "base_uri" => "https://restapi.amap.com",
-            "timeout" => 5.0
+            "timeout" => $timeout
         ]);
         $this->key = $key;
     }
@@ -25,7 +25,7 @@ class GeoUtils
     /**
      * @throws GuzzleException
      */
-    public function getLocationData(float $lng, float $lat): GeoUtils
+    public function lngLatToLocation(float $lng, float $lat): static
     {
         $response = $this->client->request("GET", "/v3/geocode/regeo", [
             "query" => [
