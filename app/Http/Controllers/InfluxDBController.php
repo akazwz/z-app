@@ -30,7 +30,7 @@ class InfluxDBController extends Controller
      */
     public function getWorkData(Request $request): bool|string
     {
-        ini_set('memory_limit', '256M');
+        /*ini_set('memory_limit', '256M');
         $sn = $request->get('sn', '1140201213940');
         $interval = $request->get('interval', '8h');
         $startDateStr = $request->get('start', '2021-06-01');
@@ -38,8 +38,6 @@ class InfluxDBController extends Controller
         $start = gmdate(DATE_RFC3339, strtotime($startDateStr));
         $stop = gmdate(DATE_RFC3339, strtotime($stopDateStr));
 
-        /*$start = strtotime($startDateStr) * 1000 * 1000 * 1000;
-        $stop = strtotime($stopDateStr) * 1000 * 1000 * 1000;*/
 
         $time = $this->getWorkTime($sn, $start, $stop);
         $distanceAndArea = $this->getWorkDistanceAndArea($sn, $start, $stop);
@@ -56,7 +54,51 @@ class InfluxDBController extends Controller
                 ];
                 array_push($data, $arr);
             }
+        }*/
+        $data = [];
+
+        $arrTime = [
+            [
+                'day' => '2020-01-01',
+                'time' => '2.89'
+            ],
+            [
+                'day' => '2020-01-02',
+                'time' => '2.73'
+            ],
+            [
+                'day' => '2020-01-03',
+                'time' => '3,56'
+            ],
+        ];
+
+        $arrArea = [
+            [
+                'day' => '2020-01-01',
+                'area' => '345',
+            ],
+            [
+                'day' => '2020-01-03',
+                'area' => '345',
+            ],
+        ];
+
+        foreach ($arrTime as $indexTime => $timeData) {
+            $day = $timeData['day'];
+            $time = $timeData['time'];
+            foreach ($arrArea as $indexArea => $areaData) {
+                $dayArea = $areaData['day'];
+                if ($day == $dayArea) {
+                    $arr = [
+                        'day' => $day,
+                        'time' => $time,
+                        'area' => $areaData['area'],
+                    ];
+                    array_push($data, $arr);
+                }
+            }
         }
+
         return json_encode($data);
     }
 

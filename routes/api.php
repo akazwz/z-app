@@ -32,6 +32,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+// Location
+
 Route::post('file-upload', [FileController::class, 'UploadFile']);
 Route::get('work-data', [InfluxDBController::class, 'getWorkData']);
 
