@@ -84,6 +84,10 @@ Route::get('/calculate', function () {
     return view('map/calculate_area_and_distance');
 });
 
+Route::get('/example', function () {
+    return view('vue/example');
+});
+
 Route::get('/export-excel', [ExcelController::class, 'exportExcel']);
 
 
