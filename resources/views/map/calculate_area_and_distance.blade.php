@@ -19,39 +19,12 @@
         url: 'http://127.0.0.1:8000/api/work-data',
         method: 'get',
         success: function (res) {
-            const start = new Date().getTime()
             let path = res;
-            let pathData;
-            let dateData;
-            let arr = [];
-            for (let i = 0; i < path.length; i++) {
-                dateData = path[i][0]
-                pathData = path[i][1];
-                const distance = Math.round(AMap.GeometryUtil.distanceOfLine(pathData));
-                const area = Math.round(AMap.GeometryUtil.ringArea(pathData));
-                const data = [dateData, area, distance]
-                arr.push(data)
-            }
-            const stop = new Date().getTime()
-            const calculateTime = (stop - start)
-            console.log(calculateTime)
-            alert(arr)
+            const distance = Math.round(AMap.GeometryUtil.distanceOfLine(path));
+            const area = Math.round(AMap.GeometryUtil.ringArea(path));
+            alert(distance)
         }
     })
-
-    function postData(data) {
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/work-area-distance',
-            method: 'post',
-            data: {data: data},
-            success: function () {
-                alert('上传数据成功')
-            },
-            error: function () {
-                alert('上传数据错误')
-            }
-        })
-    }
 </script>
 </body>
 </html>

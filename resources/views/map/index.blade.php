@@ -28,73 +28,30 @@
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=9c0e1e7ff6fe839045ad54459e9a0b2e"></script>
 <script type="text/javascript">
     //初始化地图对象，加载地图
-    /*const map = new AMap.Map("container", {
-
+    var map = new AMap.Map("container", {
         resizeEnable: true,
-        zoom: 10,
-        center: [117.5140277, 39.3873718],
-    });*/
+        zoom: 10
+    });
+
     $.ajax({
-        url: 'http://127.0.0.1:8000/api/work-area',
+        url: 'http://127.0.0.1:8000/api/work-data',
         method: 'get',
         success: function (res) {
-            let path = res;
-            const color = [
-                "#ff3a33", "#8d4c13", "#8d4813",
-                "#ffcc33", "#468d13", "#8d8713",
-                "#33a7ff", "#138d40", "#13718d",
-                "#ff3a33", "#8d4c13", "#8d4813",
-                "#ffcc33", "#468d13", "#8d8713",
-                "#33a7ff", "#138d40", "#13718d",
-                "#ff3a33", "#8d4c13", "#8d4813",
-                "#ffcc33", "#468d13", "#8d8713",
-                "#33a7ff", "#138d40", "#13718d",
-                "#ff3a33", "#8d4c13", "#8d4813",
-                "#ffcc33", "#468d13", "#8d8713",
-                "#33a7ff", "#138d40", "#13718d",
-            ]
-            let pathData;
-            let dateData;
-            let arr = [];
-            for (let i = 0; i < path.length; i++) {
-                dateData = path[i][0]
-                pathData = path[i][1];
-                const distance = Math.round(AMap.GeometryUtil.distanceOfLine(pathData));
-                const area = Math.round(AMap.GeometryUtil.ringArea(pathData));
-                const data = [dateData, area, distance]
-                arr.push(data)
-                /*polygon = new AMap.Polygon({
-                    strokeColor: '#FF33FF',
-                    fillColor: color[i],
-                    map: map,
-                    fillOpacity: 0.4,
-                    path: path[i][1],
-                });
-
-                polyline = new AMap.Polyline({
-                    map: map,
-                    path: path[i][1],     //设置折线的节点数组
-                    strokeColor: color[i],
-                    strokeOpacity: 1,
-                    strokeWeight: 3,
-                    strokeDasharray: [10, 5]
-                });*/
-            }
-            alert(arr)
-            console.log(arr)
-            /*/!*polyline.setMap(map)*!/
-            const distance = Math.round(AMap.GeometryUtil.distanceOfLine(path));
-
-            // 计算区域面积
-            const area = Math.round(AMap.GeometryUtil.ringArea(path));
-            const text = new AMap.Text({
-                position: new AMap.LngLat(path[0][0], path[0][1]),
-                text: '区域面积' + area + '平方米' + '折线长' + distance + '米',
-                offset: new AMap.Pixel(-20, -20)
+            console.log(res)
+            var polygon = new AMap.Polygon({
+                map: map,
+                fillOpacity:0.4,
+                path: res
             });
+            // 计算区域面积
+            var area = Math.round(AMap.GeometryUtil.ringArea(res));
+            var text = new AMap.Text({
+                position: new AMap.LngLat(119.28481418,25.76838843),
+                text: '区域面积' + area + '平方米',
+                offset: new AMap.Pixel(-20, -20)
+            })
             map.add(text);
             map.setFitView();
-            alert('面积:' + area + '距离:' + distance)*/
         }
     })
 
