@@ -45,8 +45,99 @@ class InfluxDBController extends Controller
             }
         }
 
+        $autoContainer = [];
+        $autoSumTda = [
+            'time' => 0,
+            'distance' => 0,
+            'area' => 0,
+        ];
+        $autoChartDataSet = [];
+        if (!empty($auto)) {
+            $autoContainer = $this->mergeSNsTypeTda($auto, $autoContainer);
+            $autoSumTda = $this->getSumTda($autoContainer);
+            $autoChartDataSet = $this->getChartDataSet($autoContainer);
+        }
+        $graderContainer = [];
+        $graderSumTda = [
+            'time' => 0,
+            'distance' => 0,
+            'area' => 0,
+        ];
+        $graderChartDataSet = [];
+        if (!empty($grader)) {
+            $graderContainer = $this->mergeSNsTypeTda($grader, $graderContainer);
+            $graderSumTda = $this->getSumTda($graderContainer);
+            $graderChartDataSet = $this->getChartDataSet($graderContainer);
+        }
 
-        return response()->json($auto);
+
+        $allSumTda = [
+            'time' => $autoSumTda['time'] + $graderSumTda['time'],
+            'distance' => $autoSumTda['distance'] + $graderSumTda['distance'],
+            'area' => $autoSumTda['area'] + $graderSumTda['area'],
+        ];
+
+        $res = [
+            'code' => 100,
+            'msg' => 'success',
+            'data' => [
+                'all' => $all,
+                'all_sum_tda' => $allSumTda,
+                'auto_sum_tda' => $autoSumTda,
+                'auto_chart' => $autoChartDataSet,
+                'grader_sum_tda' => $graderSumTda,
+                'grader_chart' => $graderChartDataSet,
+            ],
+        ];
+
+        return response()->json($res);
+    }
+
+    public function mergeSNsTypeTda($typeData, $typeContainer)
+    {
+        foreach ($typeData as $typeItems) {
+            foreach ($typeItems as $typeItem) {
+                foreach ($typeItem as $day => $tdaItem) {
+                    if (!isset($typeContainer[$day])) {
+                        $typeContainer[$day] = $tdaItem;
+                    } else {
+                        $typeContainer[$day]['time'] += round($typeContainer[$day]['time'] + $tdaItem['time'], 2);
+                        $typeContainer[$day]['distance'] += round($typeContainer[$day]['distance'] + $tdaItem['distance'], 2);
+                        $typeContainer[$day]['area'] += round($typeContainer[$day]['area'] + $tdaItem['area'], 2);
+                    }
+                }
+            }
+        }
+        return $typeContainer;
+    }
+
+    public function getSumTda($typeContainer)
+    {
+        $typeSumTda = [
+            'time' => 0,
+            'distance' => 0,
+            'area' => 0,
+        ];
+        foreach ($typeContainer as $item) {
+            $typeSumTda['time'] = round($typeSumTda['time'] + $item['time'], 2);
+            $typeSumTda['distance'] += $item['distance'];
+            $typeSumTda['area'] += $item['area'];
+        }
+        return $typeSumTda;
+    }
+
+    public function getChartDataSet($typeContainer): array
+    {
+        $typeChartDataSet = [];
+        foreach ($typeContainer as $day => $typeTdaItem) {
+            array_push($typeChartDataSet, [
+                $day,
+                $typeTdaItem['time'],
+                $typeTdaItem['distance'],
+                $typeTdaItem['area'],
+            ]);
+        }
+        return $typeChartDataSet;
     }
 
     public function getTimeDistanceArea($sn, $from, $end): array
@@ -79,10 +170,11 @@ class InfluxDBController extends Controller
                     }
                     $distanceAndArea = $this->getDistanceAreaByPath($path);
                     array_push($res, [
-                        'day' => $fromDateYmd,
-                        'time' => $time,
-                        'distance' => $distanceAndArea['distance'],
-                        'area' => $distanceAndArea['area'],
+                        $fromDateYmd => [
+                            'time' => $time,
+                            'distance' => $distanceAndArea['distance'],
+                            'area' => $distanceAndArea['area'],
+                        ],
                     ]);
                 }
             }
