@@ -55,3 +55,7 @@ function countCows($years): int
 }
 
 echo countCows(20);
+
+function yangHuiTriangle() {
+
+}
