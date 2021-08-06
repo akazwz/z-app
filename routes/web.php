@@ -92,3 +92,7 @@ Route::get('/export-excel', [ExcelController::class, 'exportExcel']);
 
 
 Route::get('/html-to-image', [ToPDFController::class, 'HtmlToImage']);
+
+Route::get('/component', function () {
+    return view('component', ['message' => 'this is message']);
+});
